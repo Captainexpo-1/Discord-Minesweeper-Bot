@@ -3,50 +3,50 @@ Minesweeper map generator for discord using spoiler formatting.
 """
 
 import random
+import time
 
-a = []
 
 
 # A horrible function that could be a lot better with little work, but I don't care.
-def around(x, y, size):
+def around(x, y, size, arr):
     count = 0
     try:
-        if (a[y + 1][x + 1] == "💣" and x < size and y < size):
+        if (arr[y + 1][x + 1] == "💣" and x < size and y < size):
             count += 1
     except:
         1 == 1
     try:
-        if (a[y - 1][x - 1] == "💣" and x > 0 and y > 0):
+        if (arr[y - 1][x - 1] == "💣" and x > 0 and y > 0):
             count += 1
     except:
         1 == 1
     try:
-        if (a[y - 1][x + 1] == "💣" and x < size and y > 0):
+        if (arr[y - 1][x + 1] == "💣" and x < size and y > 0):
             count += 1
     except:
         1 == 1
     try:
-        if (a[y + 1][x - 1] == "💣" and x > 0 and y < size):
+        if (arr[y + 1][x - 1] == "💣" and x > 0 and y < size):
             count += 1
     except:
         1 == 1
     try:
-        if (a[y - 1][x] == "💣" and y > 0):
+        if (arr[y - 1][x] == "💣" and y > 0):
             count += 1
     except:
         1 == 1
     try:
-        if (a[y + 1][x] == "💣" and y < size):
+        if (arr[y + 1][x] == "💣" and y < size):
             count += 1
     except:
         1 == 1
     try:
-        if (a[y][x - 1] == "💣" and x > 0):
+        if (arr[y][x - 1] == "💣" and x > 0):
             count += 1
     except:
         1 == 1
     try:
-        if (a[y][x + 1] == "💣" and x < size):
+        if (arr[y][x + 1] == "💣" and x < size):
             count += 1
     except:
         1 == 1
@@ -54,11 +54,14 @@ def around(x, y, size):
 
 
 def GenerateMap(difficulty, size):
+    a=[]
+    random.seed(time.time_ns())
     bombs = 1-difficulty/100
+    print(bombs)
     for i in range(size):
         n = []
         for j in range(size):
-            if (random.random() > bombs):
+            if random.random() > bombs:
                 n.append("💣")
             else:
                 n.append("⬜")
@@ -66,13 +69,12 @@ def GenerateMap(difficulty, size):
     j = ""
     numbers = "zero one two three four five six seven eight".split(" ")
     hint = False
-    c = [0, 0]
     for y in range(size):
         j += "\n"
         for x in range(size):
             if (a[y][x] == "⬜"):
-                a[y][x] = ":" + numbers[around(x, y, size)] + ":"
-                if hint == False and around(x, y, size) == 0:
+                a[y][x] = ":" + numbers[around(x, y, size,a)] + ":"
+                if hint == False and around(x, y, size,a) == 0:
                     j += "**" + a[y][x] + "**"
                     hint = True
                 else:
@@ -80,5 +82,4 @@ def GenerateMap(difficulty, size):
 
             else:
                 j += "||" + a[y][x] + "||"
-
     return j

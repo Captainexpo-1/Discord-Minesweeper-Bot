@@ -1,5 +1,3 @@
-import time
-import datetime
 import discord
 from dotenv import load_dotenv
 import os
@@ -10,10 +8,14 @@ intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = discord.app_commands.CommandTree(client)
 
-
+lastmap = ""
 @tree.command(name="minesweeper", description="Generate a minesweeper map", guild=discord.Object(id=793884190562582578))
-async def MinesweeperMapCommand(interaction, diff: float):
-    await interaction.response.send_message(GenerateMap(diff, 7))
+async def MinesweeperMapCommand(interaction):
+    global lastmap
+    map = GenerateMap(15, 7)
+    if lastmap != map:
+        await interaction.response.send_message(map)
+        lastmap = map
 
 
 @client.event
