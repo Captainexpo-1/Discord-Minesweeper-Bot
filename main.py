@@ -9,19 +9,17 @@ client = discord.Client(intents=intents)
 tree = discord.app_commands.CommandTree(client)
 
 lastmap = ""
-@tree.command(name="minesweeper", description="Generate a minesweeper map", guild=discord.Object(id=793884190562582578))
+@tree.command(name="minesweeper", description="Generate a minesweeper map")
 async def MinesweeperMapCommand(interaction):
     global lastmap
     map = GenerateMap(15, 7)
     if lastmap != map:
         await interaction.response.send_message(map)
         lastmap = map
-
-
 @client.event
 async def on_ready():
-    await tree.sync(guild=discord.Object(id=793884190562582578))
-    print("Ready!")
+    await tree.sync()
+    print("Synced and ready! Should be ready for all guilds to use")
 
 
 
